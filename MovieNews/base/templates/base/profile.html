@@ -1,0 +1,85 @@
+{% extends 'main.html' %}
+{% block style %}
+<style>
+  body {
+    background-color: rgb(0, 0, 0);
+  }
+</style>
+{% endblock %}
+{% block content %}
+<main class="profile-page layout layout--3">
+  <div class="container">
+    {% include 'base/topics_component.html' %}
+    <div class="roomList">
+      <div class="profile">
+        <div class="profile__avatar">
+          <div class="avatar avatar--large">
+            <img src="{{user.avatar.url}}" />
+          </div>
+        </div>
+        <div class="profile__info">
+          <h3>{{user.name}}</h3>
+          {% if check_is_superuser %}
+              <p style="color: rgb(215, 0, 0);">@{{user.username}}</p>
+          {% elif user.moderator %}
+              <p style="color: rgb(0, 216, 205);">@{{user.username}}</p>
+          {% else %}
+              <p>@{{user.username}}</p>
+          {% endif %}
+          {% if check_is_superuser %}
+          <p style="color: rgb(215, 0, 0);">Administrator</p>
+          {% elif user.moderator %}
+          <p style="color: rgb(0, 216, 205);">Moderator</p>
+          {% else %}
+          <p>User</p>
+          {% endif %}
+          {% if request.user == user %}
+          <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+          {% endif %}
+          {% if request.user == user %}
+          <a href="{% url 'password' %}" class="btn btn--main btn--pill">Edit Password</a>
+          {% endif %}
+        </div>
+        <div class="profile__about">
+          {% if check_is_superuser %}
+          {% if request.user.is_superuser %}
+          <a href="{% url 'all-users' %}" class="btn btn-primary">All Users</a>
+          <a href="{% url 'all-moderators' %}" class="btn btn-primary">All Moderators</a>
+          {% endif %}
+          <h3>About</h3>
+          <p>
+            {{user.bio}}
+          </p>
+          <h3>Contact info</h3>
+          <p>
+            Telegram:<span class="highlight">https://t.me/max</span>
+          </p>
+          {% else  %}
+          <h3>About</h3>
+          <p>
+            {{user.bio}}
+          </p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="roomList__header">
+        <div>
+          {% if check_is_superuser or moderator %}
+          <h2>News created by {{user.username}}</a>
+          </h2>
+          {% endif %}
+        </div>
+      </div>
+      {% include 'base/feed_component.html' %}
+      <div>
+        <a class="btn btn--main load-more make-middle" href="#">
+          Load more
+        </a>
+      </div>
+    </div>
+    {% include 'base/activity_component.html' %}
+  </div>
+</main>
+{% endblock content %}
+
