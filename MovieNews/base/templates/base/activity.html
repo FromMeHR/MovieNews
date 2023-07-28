@@ -13,7 +13,7 @@
 {% block content %}
 <main class="layout">
   <div class="container">
-    <div class="layout__box">
+    <div class="layout__box_activity">
       <div class="layout__boxHeader">
         <div class="layout__boxTitle">
           <a href="{% url 'home' %}">
@@ -37,8 +37,14 @@
                         <img src="{{message.user.avatar.url}}" />
                     </div>
                     <p>
-                        {{message.user}}
-                        <span>{{message.created|timesince}} ago</span>
+                      {% if message.user.is_superuser %}
+                          <span style="color: rgb(215, 0, 0);">@{{message.user.username}}</span>
+                      {% elif message.user.moderator %}
+                          <span style="color: rgb(0, 216, 205);">@{{message.user.username}}</span>
+                      {% else %}
+                          @{{message.user.username}}
+                      {% endif %}
+                      <span>{{message.created|timesince}} ago</span>
                     </p>
                 </a>
                 {% if request.user == message.user %}

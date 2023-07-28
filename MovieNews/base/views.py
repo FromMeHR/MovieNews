@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
-from django.db.models import Q
+from django.db.models import Q, Count
 # from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -60,13 +60,18 @@ def home(request):
     rooms = Room.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(description__icontains=q)) # for choosing a topic
     check_is_superuser = request.user.is_superuser
     topics = Topic.objects.all()[0:4]
+    if q == 'Most viewed':
+        rooms = Room.objects.annotate(viewers_count=Count('viewers')).order_by('-viewers_count')
+        room_messages = Message.objects.filter(room__in=rooms).order_by('-created')[0:3]
+    else:
+        rooms = Room.objects.filter(Q(topic__name__icontains=q) | Q(name__icontains=q) | Q(description__icontains=q))
+        room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))[0:3]
     room_count = rooms.count()
-    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))[0:3]
-    
+    rooms_all = Room.objects.all().count()    
     selected_topic = None
     if q:
         selected_topic = q
-    context = {'rooms':rooms, 'topics': topics, 'room_count': room_count, 'check_is_superuser': check_is_superuser, 'room_messages': room_messages, 'selected_topic': selected_topic, }
+    context = {'rooms':rooms, 'topics': topics, 'room_count': room_count, 'rooms_all': rooms_all, 'check_is_superuser': check_is_superuser, 'room_messages': room_messages, 'selected_topic': selected_topic, }
     return render(request, 'base/home.html', context)
 
 @login_required(login_url='login')
@@ -110,14 +115,16 @@ def userProfile(request, pk):
     rooms = user.room_set.all()
     room_messages = user.message_set.all()[0:3]
     topics = Topic.objects.all()
+    rooms_all = Room.objects.all().count()
     check_is_superuser = user.is_superuser
-    context = {'user': user, 'check_is_superuser': check_is_superuser, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
+    context = {'user': user, 'check_is_superuser': check_is_superuser, 'rooms_all': rooms_all, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     topics = Topic.objects.filter(name__icontains=q)
-    context = {'topics': topics}
+    rooms_all = Room.objects.all().count()
+    context = {'topics': topics, 'rooms_all': rooms_all}
     return render(request, 'base/topics.html', context)
 
 @login_required(login_url='login')
@@ -165,7 +172,8 @@ def updateModerator(request):
 
 def activityPage(request):
     room_messages = Message.objects.all()
-    context = {'room_messages': room_messages}
+    topics = Topic.objects.all()[0:4]
+    context = {'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/activity.html', context)
 
 def room(request, pk):

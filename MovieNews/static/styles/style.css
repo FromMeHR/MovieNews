@@ -462,6 +462,20 @@ a:hover {
   overflow: hidden;
 }
 
+.layout__box_activity {
+  width: 90%;
+  max-width: 48rem;
+  min-height: 40rem;
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -46%);
+  background-color: rgba(59, 59, 59, 0.85);
+  border-radius: 1rem;
+  box-shadow: 1px 1px 6px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
 .layout__boxHeader {
   display: flex;
   padding: 1.5rem;

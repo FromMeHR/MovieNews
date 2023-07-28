@@ -46,6 +46,9 @@
             <a href="{% url 'home' %}" class="{% if selected_topic is None %}active{% endif %}">
               All <span>{{topics.count}}</span>
             </a>
+            <a href="{% url 'home' %}?q=Most viewed" class="{% if selected_topic == 'Most viewed' %}active{% endif %}">
+              Most viewed <span>{{rooms_all}}</span>
+            </a>
           </li>
           {% for topic in topics %}
           <li>

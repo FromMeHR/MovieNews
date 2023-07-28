@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () { // going to bottom o
   const loadMoreButton = document.querySelector(".load-more")
   const roomList = document.querySelector(".roomList")
   const rooms = Array.from(roomList.querySelectorAll(".roomListRoom"))
-  const totalRooms = rooms.lengt
+  const totalRooms = rooms.length
   if (totalRooms <= 3) {
     loadMoreButton.style.display = "none";
   }
@@ -38,9 +38,6 @@ document.addEventListener("DOMContentLoaded", function () { // going to bottom o
     })
     if (nextIndex >= totalRooms) {
       loadMoreButton.style.display = "none"; // hide load more
-    }
-    if (nextIndex >= totalRooms) {
-      loadMoreButton.style.display = "none";
     }
   })
 })
