@@ -12,10 +12,10 @@
  ![33_1](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/7348a515-bb88-41b1-ac7d-81575f77cf02)
  ![333_1](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/fea08903-8adb-4235-a63c-8eec7dff751f)
 ## 4. User/Moderator profile
- ![4_1](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/cc756e13-cd71-463f-a45f-a8ff36e5e3cc)
+ ![4_2](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/13ac4d10-ef79-405d-9148-e7f3644ac5bb)
  ![44](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/c6e2c699-6924-4278-b16a-112716b28a0c)
  ![444](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/107af0a3-e9bd-47c3-a90c-e30a3047c959)
 ## 5. Administrator profile (contact info + all users/moderators (add/remove))
- ![5_1](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/da2b45f6-f488-43e5-ad1f-1e7b6175ce22)
+ ![5_2](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/190c09bd-2d8c-49ce-b593-5e7b2dd66fcf)
  ![55_1](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/f24bfa32-7bc4-4430-ab11-76b54b446bfd)
  ![555_1](https://github.com/Maxim-Levchenko/MovieStore/assets/126081409/9527d197-943b-4389-ac6a-ecfb8476cce5)

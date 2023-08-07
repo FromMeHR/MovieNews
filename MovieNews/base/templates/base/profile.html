@@ -66,8 +66,10 @@
       <div class="roomList__header">
         <div>
           {% if check_is_superuser or moderator %}
-          <h2>News created by {{user.username}}</a>
-          </h2>
+            {% if rooms.exists %}
+              <h2>News created by {{user.name}}</a>
+              </h2>
+            {% endif %}
           {% endif %}
         </div>
       </div>

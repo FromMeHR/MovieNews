@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
 from django.db.models import Q, Count
+from django.db import transaction
 # from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -117,7 +118,8 @@ def userProfile(request, pk):
     topics = Topic.objects.all()
     rooms_all = Room.objects.all().count()
     check_is_superuser = user.is_superuser
-    context = {'user': user, 'check_is_superuser': check_is_superuser, 'rooms_all': rooms_all, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
+    moderator = user.moderator
+    context = {'user': user, 'check_is_superuser': check_is_superuser, 'moderator': moderator,  'rooms_all': rooms_all, 'rooms': rooms, 'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
 
 def topicsPage(request):
@@ -155,12 +157,15 @@ def updateModerator(request):
         messages.error(request, "You're not a superuser")
         return redirect('home')
     if request.method == 'POST':
-        for user in User.objects.all():
-            checkbox_name = f"moderator_{user.id}"
-            is_moderator = checkbox_name in request.POST
-            user.moderator = is_moderator
-            user.save()
-        messages.success(request, "Moderator status updated successfully")
+        with transaction.atomic():
+            for user in User.objects.all():
+                checkbox_name = f"moderator_{user.id}"
+                is_moderator = checkbox_name in request.POST
+                if not is_moderator and user.moderator:
+                    Room.objects.filter(host=user).delete()
+                user.moderator = is_moderator
+                user.save()
+            messages.success(request, "Moderator status updated successfully")
     referer = request.META.get('HTTP_REFERER')
     if referer:
         if 'allmoderators' in referer:
